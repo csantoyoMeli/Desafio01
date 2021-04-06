@@ -14,7 +14,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository articleRepository;
 
     @Override
-    public List<ProductDTO> getProducts() {
-        return articleRepository.getProducts();
+    public List<ProductDTO> getProducts(String categoryName, String freeShiping, String order) {
+        return articleRepository.getProducts(categoryName, freeShiping, order);
     }
 }
