@@ -1,6 +1,7 @@
 package com.BootcampFirstChallenge.BootcampFirstChallenge.Services;
 
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.ProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository articleRepository;
 
     @Override
-    public List<ProductDTO> getProducts(String categoryName, String freeShiping, String order) {
-        return articleRepository.getProducts(categoryName, freeShiping, order);
+    public List<ProductDTO> getProducts(List<Criterion> criteriaValues, String order) {
+        return articleRepository.getProducts(criteriaValues, order);
     }
 }

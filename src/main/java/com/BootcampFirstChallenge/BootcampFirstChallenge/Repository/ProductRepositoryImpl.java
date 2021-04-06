@@ -1,6 +1,7 @@
 package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository;
 
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.ProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -9,24 +10,21 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
     @Override
-    public List getProducts(String categoryName, String freeShiping, String order) {
+    public List getProducts(List<Criterion> criteriaValues, String order) {
         List<ProductDTO> productsList = loadDataBase();         // LoadAllProductsFromFile
 
-        // CategoryNameFilter
-        if(categoryName != null) {
-            for (Iterator<ProductDTO> it = productsList.iterator(); it.hasNext();) {
-                if (!it.next().getCategory().contains(categoryName))
-                    it.remove();
+        // Apply Filter
+        if (criteriaValues != null) {
+            for (Criterion criterion : criteriaValues) {
+                filterList(productsList, criterion);
             }
         }
-
 
         return productsList;
     }
@@ -74,5 +72,32 @@ public class ProductRepositoryImpl implements ProductRepository {
             }
         }
         return productsList;
+    }
+
+    private void filterList(List<ProductDTO> list, Criterion criterion) {
+        switch (criterion.getType()) {
+            case "name":    // Name Filter
+                list.removeIf(productDTO -> !productDTO.getName().contains(criterion.getValue()));
+                break;
+            case "category":    // Category Filter
+                list.removeIf(productDTO -> !productDTO.getCategory().contains(criterion.getValue()));
+                break;
+            case "freeShipping":    // Free Shipping Filter
+                boolean freeShippingValue = Boolean.parseBoolean(criterion.getValue());
+                list.removeIf(productDTO -> productDTO.isFreeShipping() != freeShippingValue);
+                break;
+            case "brand":    // Brand Filter
+                list.removeIf(productDTO -> !productDTO.getBrand().contains(criterion.getValue()));
+                break;
+            case "price":    // Price Filter
+                double priceValue = Double.parseDouble(criterion.getValue());
+                list.removeIf(productDTO -> productDTO.getPrice() > priceValue);
+                break;
+            case "prestige":    // Prestige Filter
+                int prestigeValue = Integer.parseInt(criterion.getValue());
+                list.removeIf(productDTO -> productDTO.getPrestige() != prestigeValue);
+                break;
+        }
+
     }
 }
