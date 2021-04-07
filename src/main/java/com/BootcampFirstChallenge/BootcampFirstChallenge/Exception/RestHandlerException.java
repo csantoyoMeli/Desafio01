@@ -17,6 +17,10 @@ public class RestHandlerException {
         switch (errorDTO.getErrorCode()){
             case ProductException.PARAMS_EXCESS:
                 status = HttpStatus.METHOD_NOT_ALLOWED;
+                break;
+            case ProductException.INVALID_INPUT:
+                status = HttpStatus.UNPROCESSABLE_ENTITY;
+                break;
         }
 
         return new ResponseEntity(errorDTO, status);
