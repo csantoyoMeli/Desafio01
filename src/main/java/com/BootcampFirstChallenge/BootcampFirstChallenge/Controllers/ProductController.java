@@ -27,4 +27,6 @@ public class ProductController {
     public ResponseEntity purchaseRequest(@RequestBody PayloadDTO payload) throws ProductException {
         return new ResponseEntity<>(articleService.purchaseRequest(payload), HttpStatus.OK);
     }
+
+
 }

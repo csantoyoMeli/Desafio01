@@ -1,4 +1,4 @@
-package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository;
+package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Product;
 
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.ProductDTO;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.PurchaseProductDTO;
@@ -7,10 +7,7 @@ import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.ProductExcept
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @Repository
@@ -47,6 +44,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         // Product quantity avalibles is less than purchase request quantity
         if (availableProduct.getQuantity() < article.getQuantity())
             throw new ProductException(ProductException.QUANTITY_AVAILABLE_INSUFFICIENT, ProductException.QUANTITY_AVAILABLE_INSUFFICIENT_MSG);
+
+        availableProduct.setQuantity(availableProduct.getQuantity() - article.getQuantity());
+        uploadCSVFileByProduct(availableProduct);
 
         return availableProduct;
     }
@@ -143,6 +143,69 @@ public class ProductRepositoryImpl implements ProductRepository {
                 break;
             default:
                 throw new ProductException(ProductException.INVALID_INPUT, ProductException.INVALID_INPUT_MSG);
+        }
+    }
+
+    private void uploadCSVFileByProduct(ProductDTO product) {
+
+        BufferedReader bufferedReader = null;
+        FileOutputStream fileOut = null;
+        try {
+            // Getting File
+            File file = ResourceUtils.getFile("classpath:dbProductos.csv");
+            bufferedReader = new BufferedReader(new FileReader(file));
+
+            // Reading and adding first line
+            String line = bufferedReader.readLine();
+            StringBuilder inputBuffer = new StringBuilder();
+            inputBuffer.append(line);
+            inputBuffer.append("\n");
+
+            while ((line = bufferedReader.readLine()) != null) {
+                // Validating lines
+                String[] csvValues = line.split(",");
+                int id = Integer.parseInt(csvValues[0]);
+
+                if (id == product.getProductId()) {
+                    // Making an update of line
+                    String updatedLine = product.getProductId() +
+                            "," + product.getName() +
+                            "," + product.getCategory() +
+                            "," + product.getBrand() +
+                            ",$" + (int)product.getPrice() +
+                            "," + product.getQuantity() +
+                            "," + (product.isFreeShipping() ? "SI" : "NO") +
+                            "," + "*".repeat(product.getPrestige());
+
+                    inputBuffer.append(updatedLine);
+                    inputBuffer.append("\n");
+                } else {
+                    inputBuffer.append(line);
+                    inputBuffer.append("\n");
+                }
+            }
+
+            String inputStr = inputBuffer.toString();
+            bufferedReader.close();
+
+            // Write the new String with the replaced line OVER the same file
+            fileOut = new FileOutputStream(file);
+            fileOut.write(inputStr.getBytes());
+            fileOut.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Close bufferedReader
+                if (bufferedReader != null)
+                    bufferedReader.close();
+                // Close fileOut
+                if (fileOut != null)
+                    fileOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

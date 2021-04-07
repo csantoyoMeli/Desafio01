@@ -1,4 +1,4 @@
-package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository;
+package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Product;
 
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.ProductDTO;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.PurchaseProductDTO;

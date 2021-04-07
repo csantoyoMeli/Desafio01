@@ -3,7 +3,8 @@ package com.BootcampFirstChallenge.BootcampFirstChallenge.Services;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.*;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.ProductException;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.ProductRepository;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Product.ProductRepository;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Ticket.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,13 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ProductServiceImpl implements ProductService {
 
     private final String[] avalibleParams = {"order", "product", "category", "brand", "price", "freeShipping", "prestige"};
+    private AtomicLong uniqueLongId = new AtomicLong(System.currentTimeMillis());
+    private Random random = new Random();
 
     @Autowired
     private ProductRepository articleRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
 
     @Override
     public List<ProductDTO> getProducts(Map<String, String> allParams) throws ProductException {
@@ -49,16 +54,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PayloadResponseDTO purchaseRequest(PayloadDTO payload) throws ProductException {
-        AtomicLong uniqueLongId = new AtomicLong(System.currentTimeMillis());
-        Random random = new Random();
-        long uniqueID = Math.abs(random.nextLong()) + uniqueLongId.incrementAndGet();
-        TicketDTO ticket = new TicketDTO(uniqueID, payload.getArticles(), getTotalPriceOfPayload(payload));
-        return new PayloadResponseDTO(ticket, new StatusCodeDTO(200, "SUCCESS_OPERATION", "La solicitud de compra se completó con éxito"));
+
+        TicketDTO ticket = new TicketDTO(Math.abs(random.nextLong()) + uniqueLongId.incrementAndGet(),   // ID
+                payload.getArticles(),  // Articles List
+                getTotalPriceOfPayload(payload));   // Total price
+
+        ticketRepository.addNewTicket(ticket);
+
+        return new PayloadResponseDTO(ticket, new StatusCodeDTO(200,
+                "SUCCESS_OPERATION",
+                "La solicitud de compra se completó con éxito"));
     }
 
     private double getTotalPriceOfPayload(PayloadDTO payloadDTO) throws ProductException {
         double total = 0;
-        for(PurchaseProductDTO article: payloadDTO.getArticles()){
+        for (PurchaseProductDTO article : payloadDTO.getArticles()) {
             total += article.getQuantity() * articleRepository.getProductToPurchase(article).getPrice();
         }
         return total;
