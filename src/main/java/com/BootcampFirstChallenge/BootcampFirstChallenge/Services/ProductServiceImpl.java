@@ -1,17 +1,14 @@
 package com.BootcampFirstChallenge.BootcampFirstChallenge.Services;
 
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.ProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.*;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.ProductException;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -30,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
 
         if (allParams != null) {
             for (Map.Entry<String, String> entry : allParams.entrySet()) {
-                // Throws if any param is invalid
+                // Validate params
                 if (!Arrays.stream(avalibleParams).anyMatch(val -> val.equals(entry.getKey())))
                     throw new ProductException(ProductException.INVALID_INPUT, ProductException.INVALID_INPUT_MSG);
 
@@ -41,13 +38,29 @@ public class ProductServiceImpl implements ProductService {
                     criteria.add(new Criterion(entry.getValue(), entry.getKey()));
                     criteriaCounter++;
                 }
-
             }
         }
         // Params Excess exception
-        if (criteriaCounter > 2) {
+        if (criteriaCounter > 2)
             throw new ProductException(ProductException.PARAMS_EXCESS, ProductException.PARAMS_EXCESS_MSG);
-        }
+
         return articleRepository.getProducts(criteria, order);
+    }
+
+    @Override
+    public PayloadResponseDTO purchaseRequest(PayloadDTO payload) throws ProductException {
+        AtomicLong uniqueLongId = new AtomicLong(System.currentTimeMillis());
+        Random random = new Random();
+        long uniqueID = Math.abs(random.nextLong()) + uniqueLongId.incrementAndGet();
+        TicketDTO ticket = new TicketDTO(uniqueID, payload.getArticles(), getTotalPriceOfPayload(payload));
+        return new PayloadResponseDTO(ticket, new StatusCodeDTO(200, "SUCCESS_OPERATION", "La solicitud de compra se completó con éxito"));
+    }
+
+    private double getTotalPriceOfPayload(PayloadDTO payloadDTO) throws ProductException {
+        double total = 0;
+        for(PurchaseProductDTO article: payloadDTO.getArticles()){
+            total += article.getQuantity() * articleRepository.getProductToPurchase(article).getPrice();
+        }
+        return total;
     }
 }
