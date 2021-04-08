@@ -1,4 +1,4 @@
-package com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos;
+package com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product;
 
 import lombok.Data;
 

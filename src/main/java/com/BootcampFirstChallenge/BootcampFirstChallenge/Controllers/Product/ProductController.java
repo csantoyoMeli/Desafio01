@@ -1,8 +1,8 @@
-package com.BootcampFirstChallenge.BootcampFirstChallenge.Controllers;
+package com.BootcampFirstChallenge.BootcampFirstChallenge.Controllers.Product;
 
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.PayloadDTO;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.ProductException;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Services.ProductService;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PayloadDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.Product.ProductException;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Services.Product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +27,4 @@ public class ProductController {
     public ResponseEntity purchaseRequest(@RequestBody PayloadDTO payload) throws ProductException {
         return new ResponseEntity<>(articleService.purchaseRequest(payload), HttpStatus.OK);
     }
-
-
 }

@@ -1,9 +1,9 @@
 package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Product;
 
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.ProductDTO;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.PurchaseProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.ProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PurchaseProductDTO;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.ProductException;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.Product.ProductException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -121,7 +121,6 @@ public class ProductRepositoryImpl implements ProductRepository {
                 list.removeIf(productDTO -> productDTO.getPrestige() != prestigeValue);
                 break;
         }
-
     }
 
     private void orderList(List<ProductDTO> list, String order) throws ProductException {

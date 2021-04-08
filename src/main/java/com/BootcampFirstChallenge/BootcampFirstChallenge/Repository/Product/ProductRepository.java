@@ -1,9 +1,9 @@
 package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Product;
 
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.ProductDTO;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.PurchaseProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.ProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PurchaseProductDTO;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.ProductException;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.Product.ProductException;
 
 import java.util.List;
 

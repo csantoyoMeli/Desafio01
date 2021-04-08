@@ -1,4 +1,4 @@
-package com.BootcampFirstChallenge.BootcampFirstChallenge.Exception;
+package com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.Product;
 
 import lombok.Data;
 

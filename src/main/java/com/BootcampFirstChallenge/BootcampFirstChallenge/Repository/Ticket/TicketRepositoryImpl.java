@@ -1,10 +1,7 @@
 package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Ticket;
 
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.PurchaseProductDTO;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.TicketDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SequenceWriter;
-import org.springframework.asm.TypeReference;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PurchaseProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Ticket.TicketDTO;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 

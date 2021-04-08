@@ -1,8 +1,13 @@
-package com.BootcampFirstChallenge.BootcampFirstChallenge.Services;
+package com.BootcampFirstChallenge.BootcampFirstChallenge.Services.Product;
 
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.*;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PayloadDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PayloadResponseDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.ProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PurchaseProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Ticket.TicketDTO;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.ProductException;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.Product.ProductException;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Product.ProductRepository;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Ticket.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
         ticketRepository.addNewTicket(ticket);
 
         return new PayloadResponseDTO(ticket, new StatusCodeDTO(200,
-                "SUCCESS_OPERATION",
+                "SUCCESSFUL_OPERATION",
                 "La solicitud de compra se completó con éxito"));
     }
 
