@@ -1,7 +1,6 @@
 package com.BootcampFirstChallenge.BootcampFirstChallenge.Repository.Client;
 
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Client.ClientDTO;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.ProductDTO;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.Client.ClientException;
 import org.springframework.stereotype.Service;

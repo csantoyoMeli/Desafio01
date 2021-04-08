@@ -27,4 +27,9 @@ public class ProductController {
     public ResponseEntity purchaseRequest(@RequestBody PayloadDTO payload) throws ProductException {
         return new ResponseEntity<>(articleService.purchaseRequest(payload), HttpStatus.OK);
     }
+
+    @GetMapping("/market-car")
+    public ResponseEntity getTotalPurchase() {
+        return new ResponseEntity<>(articleService.getMarketCar(), HttpStatus.OK);
+    }
 }

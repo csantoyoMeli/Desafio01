@@ -1,10 +1,7 @@
 package com.BootcampFirstChallenge.BootcampFirstChallenge.Services.Product;
 
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.*;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PayloadDTO;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PayloadResponseDTO;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.ProductDTO;
-import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.PurchaseProductDTO;
+import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Product.*;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Dtos.Ticket.TicketDTO;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Entities.Criterion;
 import com.BootcampFirstChallenge.BootcampFirstChallenge.Exception.Product.ProductException;
@@ -71,10 +68,24 @@ public class ProductServiceImpl implements ProductService {
                 "La solicitud de compra se completó con éxito"));
     }
 
+    @Override
+    public MarketCarDTO getMarketCar() {
+        List<TicketDTO> ticketList = ticketRepository.getTickets();
+        return new MarketCarDTO(ticketList, getTotalPriceOfTickets(ticketList));
+    }
+
     private double getTotalPriceOfPayload(PayloadDTO payloadDTO) throws ProductException {
         double total = 0;
         for (PurchaseProductDTO article : payloadDTO.getArticles()) {
             total += article.getQuantity() * articleRepository.getProductToPurchase(article).getPrice();
+        }
+        return total;
+    }
+
+    private double getTotalPriceOfTickets(List<TicketDTO> tickets) {
+        double total = 0;
+        for (TicketDTO t : tickets) {
+            total += t.getTotal();
         }
         return total;
     }

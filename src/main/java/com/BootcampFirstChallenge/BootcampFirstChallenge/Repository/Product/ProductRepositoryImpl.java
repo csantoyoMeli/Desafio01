@@ -158,7 +158,6 @@ public class ProductRepositoryImpl implements ProductRepository {
             String line = bufferedReader.readLine();
             StringBuilder inputBuffer = new StringBuilder();
             inputBuffer.append(line);
-            inputBuffer.append("\n");
 
             while ((line = bufferedReader.readLine()) != null) {
                 // Validating lines
@@ -176,11 +175,11 @@ public class ProductRepositoryImpl implements ProductRepository {
                             "," + (product.isFreeShipping() ? "SI" : "NO") +
                             "," + "*".repeat(product.getPrestige());
 
+                    inputBuffer.append("\n");
                     inputBuffer.append(updatedLine);
-                    inputBuffer.append("\n");
                 } else {
-                    inputBuffer.append(line);
                     inputBuffer.append("\n");
+                    inputBuffer.append(line);
                 }
             }
 
