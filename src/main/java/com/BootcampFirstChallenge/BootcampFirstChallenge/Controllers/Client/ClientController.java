@@ -26,4 +26,5 @@ public class ClientController {
     public ResponseEntity getClients(@RequestParam(required = false) Map<String, String> allParams) throws ClientException {
         return new ResponseEntity(clientService.getClients(allParams), HttpStatus.OK);
     }
+    
 }
